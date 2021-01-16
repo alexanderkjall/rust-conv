@@ -13,18 +13,18 @@ This macro attempts to derive an implementation of the [`TryFrom`](../trait.TryF
 
 If a conversion fails (due to there being no matching variant for the specified integer value `src`), then the conversion returns `Err(Unrepresentable(src))` (see [`Unrepresentable`](../errors/struct.Unrepresentable.html)).
 
-It is compatible with the [`custom_derive!`](https://crates.io/crates/custom_derive) macro.
+It is compatible with the [`macro_attr!`](https://crates.io/crates/macro-attr) macro.
 
 ## Example
 
-Using `custom_derive!`:
+Using `macro_attr!`:
 
 ```
 #[macro_use] extern crate conv;
-#[macro_use] extern crate custom_derive;
+#[macro_use] extern crate macro_attr;
 
-custom_derive! {
-    #[derive(Debug, PartialEq, TryFrom(i32))]
+macro_attr! {
+    #[derive(Debug, PartialEq, TryFrom!(i32))]
     enum Colours {
         Red = 0,
         Green = 5,

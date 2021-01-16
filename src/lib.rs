@@ -226,7 +226,8 @@ fn too_many_errors() -> Result<(), GeneralErrorKind> {
 #![cfg_attr(not(feature = "std"), no_std)]
 #[cfg(not(feature = "std"))] extern crate core as std;
 
-#[macro_use] extern crate custom_derive;
+#[macro_use]
+extern crate macro_attr;
 
 // Exported macros.
 pub mod macros;

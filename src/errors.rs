@@ -224,7 +224,7 @@ macro_rules! IntoInner {
     };
 }
 
-custom_derive!{
+macro_attr!{
     /**
     A general error enumeration that subsumes all other conversion errors.
 
@@ -232,16 +232,16 @@ custom_derive!{
     */
     #[derive(
         Copy, Clone, Eq, PartialEq, Ord, PartialOrd,
-        IntoInner, DummyDebug, FromNoError,
-        EnumDesc(
+        IntoInner!, DummyDebug!, FromNoError!,
+        EnumDesc!(
             NegOverflow => "conversion resulted in negative overflow",
             PosOverflow => "conversion resulted in positive overflow",
             Unrepresentable => "could not convert unrepresentable value",
         ),
-        FromName(Unrepresentable),
-        FromName(NegOverflow),
-        FromName(PosOverflow),
-        FromRemap(RangeError(NegOverflow, PosOverflow))
+        FromName!(Unrepresentable),
+        FromName!(NegOverflow),
+        FromName!(PosOverflow),
+        FromRemap!(RangeError(NegOverflow, PosOverflow))
     )]
     pub enum GeneralError<T> {
         /// Input was too negative for the target type.
@@ -268,7 +268,7 @@ impl<T> From<FloatError<T>> for GeneralError<T> {
     }
 }
 
-custom_derive! {
+macro_attr! {
     /**
     A general error enumeration that subsumes all other conversion errors, but discards all input payloads the errors may be carrying.
 
@@ -276,18 +276,18 @@ custom_derive! {
     */
     #[derive(
         Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Debug,
-        FromNoError,
-        EnumDesc(
+        FromNoError!,
+        EnumDesc!(
             NegOverflow => "conversion resulted in negative overflow",
             PosOverflow => "conversion resulted in positive overflow",
             Unrepresentable => "could not convert unrepresentable value",
         ),
-        FromName(Unrepresentable<T>),
-        FromName(NegOverflow<T>),
-        FromName(PosOverflow<T>),
-        FromRemap(RangeErrorKind(NegOverflow, PosOverflow)),
-        FromRemap(RangeError<T>(NegOverflow, PosOverflow)),
-        FromRemap(GeneralError<T>(NegOverflow, PosOverflow, Unrepresentable))
+        FromName!(Unrepresentable<T>),
+        FromName!(NegOverflow<T>),
+        FromName!(PosOverflow<T>),
+        FromRemap!(RangeErrorKind(NegOverflow, PosOverflow)),
+        FromRemap!(RangeError<T>(NegOverflow, PosOverflow)),
+        FromRemap!(GeneralError<T>(NegOverflow, PosOverflow, Unrepresentable))
     )]
     pub enum GeneralErrorKind {
         /// Input was too negative for the target type.
@@ -334,51 +334,51 @@ impl Error for NoError {
     }
 }
 
-custom_derive! {
+macro_attr! {
     /// Indicates that the conversion failed because the value was not representable.
     #[derive(
         Copy, Clone, Eq, PartialEq, Ord, PartialOrd,
-        IntoInner, DummyDebug, FromNoError,
-        Desc("could not convert unrepresentable value")
+        IntoInner!, DummyDebug!, FromNoError!,
+        Desc!("could not convert unrepresentable value")
     )]
     pub struct Unrepresentable<T>(pub T);
 }
 
-custom_derive! {
+macro_attr! {
     /// Indicates that the conversion failed due to a negative overflow.
     #[derive(
         Copy, Clone, Eq, PartialEq, Ord, PartialOrd,
-        IntoInner, DummyDebug, FromNoError,
-        Desc("conversion resulted in negative overflow")
+        IntoInner!, DummyDebug!, FromNoError!,
+        Desc!("conversion resulted in negative overflow")
     )]
     pub struct NegOverflow<T>(pub T);
 }
 
-custom_derive! {
+macro_attr! {
     /// Indicates that the conversion failed due to a positive overflow.
     #[derive(
         Copy, Clone, Eq, PartialEq, Ord, PartialOrd,
-        IntoInner, DummyDebug, FromNoError,
-        Desc("conversion resulted in positive overflow")
+        IntoInner!, DummyDebug!, FromNoError!,
+        Desc!("conversion resulted in positive overflow")
     )]
     pub struct PosOverflow<T>(pub T);
 }
 
-custom_derive! {
+macro_attr! {
     /**
     Indicates that a conversion from a floating point type failed.
     */
     #[derive(
         Copy, Clone, Eq, PartialEq, Ord, PartialOrd,
-        IntoInner, DummyDebug, FromNoError,
-        EnumDesc(
+        IntoInner!, DummyDebug!, FromNoError!,
+        EnumDesc!(
             NegOverflow => "conversion resulted in negative overflow",
             PosOverflow => "conversion resulted in positive overflow",
             NotANumber => "conversion target does not support not-a-number",
         ),
-        FromName(NegOverflow),
-        FromName(PosOverflow),
-        FromRemap(RangeError(NegOverflow, PosOverflow))
+        FromName!(NegOverflow),
+        FromName!(PosOverflow),
+        FromRemap!(RangeError(NegOverflow, PosOverflow))
     )]
     pub enum FloatError<T> {
         /// Input was too negative for the target type.
@@ -392,19 +392,19 @@ custom_derive! {
     }
 }
 
-custom_derive! {
+macro_attr! {
     /**
     Indicates that a conversion failed due to a range error.
     */
     #[derive(
         Copy, Clone, Eq, PartialEq, Ord, PartialOrd,
-        IntoInner, DummyDebug, FromNoError,
-        EnumDesc(
+        IntoInner!, DummyDebug!, FromNoError!,
+        EnumDesc!(
             NegOverflow => "conversion resulted in negative overflow",
             PosOverflow => "conversion resulted in positive overflow",
         ),
-        FromName(NegOverflow),
-        FromName(PosOverflow)
+        FromName!(NegOverflow),
+        FromName!(PosOverflow)
     )]
     pub enum RangeError<T> {
         /// Input was too negative for the target type.
@@ -415,7 +415,7 @@ custom_derive! {
     }
 }
 
-custom_derive! {
+macro_attr! {
     /**
     Indicates that a conversion failed due to a range error.
 
@@ -423,14 +423,14 @@ custom_derive! {
     */
     #[derive(
         Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Debug,
-        FromNoError,
-        EnumDesc(
+        FromNoError!,
+        EnumDesc!(
             NegOverflow => "conversion resulted in negative overflow",
             PosOverflow => "conversion resulted in positive overflow",
         ),
-        FromName(NegOverflow<T>),
-        FromName(PosOverflow<T>),
-        FromRemap(RangeError<T>(NegOverflow, PosOverflow))
+        FromName!(NegOverflow<T>),
+        FromName!(PosOverflow<T>),
+        FromRemap!(RangeError<T>(NegOverflow, PosOverflow))
     )]
     pub enum RangeErrorKind {
         /// Input was too negative for the target type.

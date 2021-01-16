@@ -17,10 +17,10 @@ exclude = [
 
 [features]
 default = ["std"]
-std = ["custom_derive/std"]
+std = ["macro-attr/std"]
 
 [dependencies]
-custom_derive = { version = "0.1.5", default-features = false }
+macro-attr = { version = "0.2.0", default-features = false }
 
 [dev-dependencies]
 quickcheck = "0.2.21, < 0.2.25"
